@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct DemoApp: App {
@@ -17,10 +18,17 @@ struct DemoApp: App {
 //                viewModel: .init(client: LiveAppleProductsClient())
 //            )
             
-            TodosView(
+//            TodosView(
+//                store: .init(
+//                    initialState: Todos.State(),
+//                    reducer: Todos.init
+//                )
+//            )
+            
+            HomeNavigator.ContentView(
                 store: .init(
-                    initialState: Todos.State(),
-                    reducer: Todos.init
+                    initialState: HomeNavigator.State(),
+                    reducer: HomeNavigator.init
                 )
             )
         }

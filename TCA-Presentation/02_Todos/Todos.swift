@@ -73,7 +73,7 @@ struct Todos {
                 state.isUndoAvailable = true
                 
                 return .run { send in
-                    try await clock.sleep(for: .seconds(5))
+                    try await clock.sleep(for: .seconds(3))
                     await send(.disableUndo)
                 }
                 .cancellable(id: CancelID.undo, cancelInFlight: true)
@@ -82,25 +82,9 @@ struct Todos {
                 state.isUndoAvailable = false
                 return .none
                 
-            case var .move(source, destination):
-                if state.filter == .completed {
-                    source = IndexSet(
-                        source
-                            .map { state.filteredTodos[$0] }
-                            .compactMap { state.todos.index(id: $0.id) }
-                    )
-                    
-                    destination = if destination < state.filteredTodos.endIndex {
-                        state.todos.index(id: state.filteredTodos[destination].id) ?? destination
-                    } else {
-                        state.todos.endIndex
-                    }
-                }
-                
+            case let .move(source, destination):
                 state.todos.move(fromOffsets: source, toOffset: destination)
-                
-                return .send(.sortCompletedTodos)
-                    .debounce(id: DebounceID.sort, for: .seconds(1), scheduler: mainQueue)
+                return .none
                 
             case .sortCompletedTodos:
                 state.todos.sort { $1.isComplete && !$0.isComplete }
@@ -133,10 +117,6 @@ extension Todos {
     enum CancelID {
         case undo
         case todoCompletion
-    }
-    
-    enum DebounceID {
-        case sort
     }
 }
 
@@ -180,14 +160,14 @@ struct TodosView: View {
                     Button(
                         "Undo",
                         systemImage: "arrow.uturn.backward.circle.fill",
-                        action: { store.send(.onUndoButtonTap, animation: .default)}
+                        action: { store.send(.onUndoButtonTap, animation: .default) }
                     )
                 }
                 
                 Button(
                     "Add Todo",
                     systemImage: "plus.circle.fill",
-                    action: { store.send(.onAddTodoButtonTap, animation: .default)}
+                    action: { store.send(.onAddTodoButtonTap, animation: .default) }
                 )
             }
             .animation(.snappy, value: store.isUndoAvailable)
