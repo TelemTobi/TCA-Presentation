@@ -12,18 +12,30 @@ import ComposableArchitecture
 struct Todo {
     
     @ObservableState
-    struct State: Equatable, Identifiable {
-        var description = ""
+    struct State: Equatable, Identifiable, Codable {
         let id: UUID
+        var description = ""
         var isComplete = false
     }
     
-    enum Action: BindableAction, Sendable {
+    enum Action: BindableAction {
         case binding(BindingAction<State>)
+        case onToggle
     }
     
     var body: some Reducer<State, Action> {
         BindingReducer()
+        
+        Reduce { state, action in
+            switch action {
+            case .onToggle:
+                state.isComplete.toggle()
+                return .none
+                
+            case .binding:
+                return .none
+            }
+        }
     }
 }
 
@@ -34,7 +46,7 @@ struct TodoView: View {
     var body: some View {
         HStack {
             Button {
-                store.isComplete.toggle()
+                store.send(.onToggle)
             } label: {
                 Image(systemName: store.isComplete ? "checkmark.square" : "square")
             }
@@ -44,4 +56,13 @@ struct TodoView: View {
         }
         .foregroundColor(store.isComplete ? .gray : nil)
     }
+}
+
+#Preview {
+    TodoView(
+        store: .init(
+            initialState: Todo.State(id: UUID(), description: "Untitled Todo"),
+            reducer: Todo.init
+        )
+    )
 }

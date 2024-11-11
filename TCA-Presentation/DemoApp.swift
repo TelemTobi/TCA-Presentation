@@ -12,7 +12,7 @@ import ComposableArchitecture
 struct DemoApp: App {
     var body: some Scene {
         WindowGroup {
-//            PreObservationView()
+            PreObservationView()
             
 //            ProtocolDependenciesView(
 //                viewModel: .init(client: LiveAppleProductsClient())
@@ -25,12 +25,12 @@ struct DemoApp: App {
 //                )
 //            )
             
-            HomeNavigator.ContentView(
-                store: .init(
-                    initialState: HomeNavigator.State(),
-                    reducer: HomeNavigator.init
-                )
-            )
+//            HomeNavigator.ContentView(
+//                store: .init(
+//                    initialState: HomeNavigator.State(),
+//                    reducer: HomeNavigator.init
+//                )
+//            )
         }
     }
 }

@@ -15,9 +15,11 @@ struct Todos {
     struct State: Equatable {
         var editMode: EditMode = .inactive
         var filter: Filter = .all
-        var todos: IdentifiedArrayOf<Todo.State> = []
         var isUndoAvailable: Bool = false
         
+        @Shared(.fileStorage(.applicationDirectory.appending(path: "todos")))
+        var todos: IdentifiedArrayOf<Todo.State> = []
+
         fileprivate var deletedTodos: IdentifiedArrayOf<Todo.State> = []
         
         var filteredTodos: IdentifiedArrayOf<Todo.State> {
@@ -29,7 +31,7 @@ struct Todos {
         }
     }
     
-    enum Action: BindableAction, Sendable {
+    enum Action: BindableAction {
         case todos(IdentifiedActionOf<Todo>)
         case binding(BindingAction<State>)
         case onAddTodoButtonTap
@@ -178,7 +180,7 @@ struct TodosView: View {
 #Preview {
     TodosView(
         store: .init(
-            initialState: Todos.State(),
+            initialState: Todos.State(todos: .mock),
             reducer: Todos.init
         )
     )
@@ -187,18 +189,18 @@ struct TodosView: View {
 extension IdentifiedArrayOf<Todo.State> {
     static let mock: Self = [
         Todo.State(
+            id: UUID(),
             description: "Check Mail",
-            id: UUID(),
             isComplete: false
         ),
         Todo.State(
+            id: UUID(),
             description: "Buy Milk",
-            id: UUID(),
             isComplete: false
         ),
         Todo.State(
-            description: "Call Mom",
             id: UUID(),
+            description: "Call Mom",
             isComplete: true
         ),
     ]
