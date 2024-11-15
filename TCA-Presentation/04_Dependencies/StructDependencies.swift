@@ -60,9 +60,9 @@ struct StructDependenciesView: View {
 class StructDependenciesViewModel {
     
     private(set) var viewState: ViewState = .loading
-    private let client: AppleProductsClientProtocol
+    private let client: AppleProductsClient
     
-    init(client: AppleProductsClientProtocol) {
+    init(client: AppleProductsClient) {
         self.client = client
     }
     
@@ -87,15 +87,48 @@ class StructDependenciesViewModel {
     }
 }
 
-// MARK: - Live
+struct AppleProductsClient {
+    var fetchProducts: @Sendable () async -> Result<[AppleProduct], Error>
+}
 
+extension AppleProductsClient {
+    
+    static let happyFlow = Self(
+        fetchProducts: {
+            try? await Task.sleep(for: .seconds(1))
+            return .success(AppleProduct.mock)
+        }
+    )
+    
+    static let emptyState = Self(
+        fetchProducts: {
+            try? await Task.sleep(for: .seconds(1))
+            return .success([])
+        }
+    )
+    
+    static let error = Self(
+        fetchProducts: {
+            try? await Task.sleep(for: .seconds(1))
+            return .failure(NSError())
+        }
+    )
+}
 
-// MARK: - Empty
-
-// ...
-
-#Preview {
+#Preview("Happy Flow") {
     StructDependenciesView(
-        viewModel: .init(client: LiveAppleProductsClient())
+        viewModel: .init(client: .happyFlow)
+    )
+}
+
+#Preview("Empty State") {
+    StructDependenciesView(
+        viewModel: .init(client: .emptyState)
+    )
+}
+
+#Preview("Error") {
+    StructDependenciesView(
+        viewModel: .init(client: .error)
     )
 }

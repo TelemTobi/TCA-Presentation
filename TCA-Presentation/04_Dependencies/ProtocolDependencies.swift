@@ -87,13 +87,13 @@ class ProtocolDependenciesViewModel {
     }
 }
 
-// MARK: - Live
-
 protocol AppleProductsClientProtocol: AnyObject {
     func fetchProducts() async -> Result<[AppleProduct], Error>
 }
 
-class LiveAppleProductsClient: AppleProductsClientProtocol {
+// MARK: - Happy flow
+
+class HappyFlow_AppleProductsClient: AppleProductsClientProtocol {
     
     func fetchProducts() async -> Result<[AppleProduct], Error> {
         try? await Task.sleep(for: .seconds(1))
@@ -101,12 +101,40 @@ class LiveAppleProductsClient: AppleProductsClientProtocol {
     }
 }
 
-// MARK: - Empty
-
-// ...
-
-#Preview {
+#Preview("Happy Flow") {
     ProtocolDependenciesView(
-        viewModel: .init(client: LiveAppleProductsClient())
+        viewModel: .init(client: HappyFlow_AppleProductsClient())
+    )
+}
+
+// MARK: - Empty state
+
+class EmptyState_AppleProductsClient: AppleProductsClientProtocol {
+    
+    func fetchProducts() async -> Result<[AppleProduct], Error> {
+        try? await Task.sleep(for: .seconds(1))
+        return .success([])
+    }
+}
+
+#Preview("Empty State") {
+    ProtocolDependenciesView(
+        viewModel: .init(client: EmptyState_AppleProductsClient())
+    )
+}
+
+// MARK: - Error
+
+class Error_AppleProductsClient: AppleProductsClientProtocol {
+    
+    func fetchProducts() async -> Result<[AppleProduct], Error> {
+        try? await Task.sleep(for: .seconds(1))
+        return .failure(NSError())
+    }
+}
+
+#Preview("Error") {
+    ProtocolDependenciesView(
+        viewModel: .init(client: Error_AppleProductsClient())
     )
 }
