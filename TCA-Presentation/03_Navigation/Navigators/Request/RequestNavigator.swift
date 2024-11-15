@@ -13,7 +13,7 @@ struct RequestNavigator {
     
     @ObservableState
     struct State: Equatable {
-        var root = AmountReducer.State()
+        var root = Amount.State()
         var path = StackState<Path.State>()
         
         var request = Request()
@@ -26,24 +26,24 @@ struct RequestNavigator {
     }
     
     enum Action {
-        case root(AmountReducer.Action)
+        case root(Amount.Action)
         case path(StackAction<Path.State, Path.Action>)
         case didTapClose
     }
     
     var body: some ReducerOf<Self> {
-        Scope(state: \.root, action: \.root, child: AmountReducer.init)
+        Scope(state: \.root, action: \.root, child: Amount.init)
         
         Reduce { state, action in
             switch action {
             case let .root(.didSelectAmount(amount)):
                 state.request.amount = amount
-                state.path.append(.contacts(ContactsReducer.State()))
+                state.path.append(.contacts(Contacts.State()))
                 return .none
                 
             case let .path(.element(_, action: .contacts(.didSelectContact(contact)))):
                 state.request.contact = contact
-                state.path.append(.reason(ReasonReducer.State()))
+                state.path.append(.reason(Reason.State()))
                 return .none
                 
             case let .path(.element(_, action: .reason(.didSelectReason(reason)))):
@@ -66,8 +66,8 @@ extension RequestNavigator {
     
     @Reducer(state: .equatable)
     enum Path {
-        case contacts(ContactsReducer)
-        case reason(ReasonReducer)
+        case contacts(Contacts)
+        case reason(Reason)
     }
     
     struct Request: Equatable {

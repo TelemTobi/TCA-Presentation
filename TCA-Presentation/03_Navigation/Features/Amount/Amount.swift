@@ -1,15 +1,15 @@
 //
-//  HomeReducer.swift
+//  Amount.swift
 //  TCA-Demo
 //
-//  Created by Telem Tobi on 09/02/2024.
+//  Created by Telem Tobi on 06/02/2024.
 //
 
 import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct HomeReducer {
+struct Amount {
     
     @ObservableState
     struct State: Equatable {
@@ -17,18 +17,18 @@ struct HomeReducer {
     }
     
     enum Action {
-        case onTransferTap
-        case onRequestTap
+        case didSelectAmount(Float)
     }
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-
+            
             // MARK: Navigation actions
-            case .onTransferTap, .onRequestTap:
+            case .didSelectAmount:
                 return .none
             }
         }
     }
 }
+

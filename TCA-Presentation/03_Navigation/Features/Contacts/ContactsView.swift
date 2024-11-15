@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 struct ContactsView: View {
     
-    let store: StoreOf<ContactsReducer>
+    let store: StoreOf<Contacts>
     
     @Environment(\.themeColor) private var themeColor
     
@@ -40,8 +40,8 @@ struct ContactsView: View {
     NavigationStack {
         ContactsView(
             store: .init(
-                initialState: ContactsReducer.State(),
-                reducer: { ContactsReducer() }
+                initialState: Contacts.State(),
+                reducer: { Contacts() }
             )
         )
     }

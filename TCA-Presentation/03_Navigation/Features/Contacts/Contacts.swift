@@ -1,5 +1,5 @@
 //
-//  ContactsReducer.swift
+//  Contacts.swift
 //  TCA-Demo
 //
 //  Created by Telem Tobi on 06/02/2024.
@@ -9,7 +9,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct ContactsReducer {
+struct Contacts {
     
     @ObservableState
     struct State: Equatable {

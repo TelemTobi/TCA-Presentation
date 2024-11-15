@@ -13,7 +13,7 @@ struct TransferNavigator {
     
     @ObservableState
     struct State: Equatable {
-        var root = ContactsReducer.State()
+        var root = Contacts.State()
         var path = StackState<Path.State>()
         
         var transfer = Transfer()
@@ -26,24 +26,24 @@ struct TransferNavigator {
     }
     
     enum Action {
-        case root(ContactsReducer.Action)
+        case root(Contacts.Action)
         case path(StackAction<Path.State, Path.Action>)
         case didTapClose
     }
     
     var body: some ReducerOf<Self> {
-        Scope(state: \.root, action: \.root, child: ContactsReducer.init)
+        Scope(state: \.root, action: \.root, child: Contacts.init)
         
         Reduce { state, action in
             switch action {
             case let .root(.didSelectContact(contact)):
                 state.transfer.contact = contact
-                state.path.append(.amount(AmountReducer.State()))
+                state.path.append(.amount(Amount.State()))
                 return .none
                 
             case let .path(.element(_, action: .amount(.didSelectAmount(amount)))):
                 state.transfer.amount = amount
-                state.path.append(.reason(ReasonReducer.State()))
+                state.path.append(.reason(Reason.State()))
                 return .none
                 
             case let .path(.element(_, action: .reason(.didSelectReason(reason)))):
@@ -66,8 +66,8 @@ extension TransferNavigator {
     
     @Reducer(state: .equatable)
     enum Path {
-        case amount(AmountReducer)
-        case reason(ReasonReducer)
+        case amount(Amount)
+        case reason(Reason)
     }
     
     struct Transfer: Equatable {

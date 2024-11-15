@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 struct ReasonView: View {
     
-    let store: StoreOf<ReasonReducer>
+    let store: StoreOf<Reason>
     
     @Environment(\.themeColor) private var themeColor
     
@@ -39,8 +39,8 @@ struct ReasonView: View {
     NavigationStack {
         ReasonView(
             store: .init(
-                initialState: ReasonReducer.State(),
-                reducer: { ReasonReducer() }
+                initialState: Reason.State(),
+                reducer: { Reason() }
             )
         )
     }

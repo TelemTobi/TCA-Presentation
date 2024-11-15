@@ -13,17 +13,17 @@ struct HomeNavigator {
     
     @ObservableState
     struct State: Equatable {
-        var root = HomeReducer.State()
+        var root = Home.State()
         @Presents var destination: Destination.State?
     }
     
     enum Action {
-        case root(HomeReducer.Action)
+        case root(Home.Action)
         case destination(PresentationAction<Destination.Action>)
     }
     
     var body: some ReducerOf<Self> {
-        Scope(state: \.root, action: \.root, child: HomeReducer.init)
+        Scope(state: \.root, action: \.root, child: Home.init)
         
         Reduce { state, action in
             switch action {

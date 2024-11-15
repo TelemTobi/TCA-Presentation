@@ -1,15 +1,15 @@
 //
-//  ReasonReducer.swift
+//  Home.swift
 //  TCA-Demo
 //
-//  Created by Telem Tobi on 07/02/2024.
+//  Created by Telem Tobi on 09/02/2024.
 //
 
 import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct ReasonReducer {
+struct Home {
     
     @ObservableState
     struct State: Equatable {
@@ -17,15 +17,16 @@ struct ReasonReducer {
     }
     
     enum Action {
-        case didSelectReason(String)
+        case onTransferTap
+        case onRequestTap
     }
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            
+
             // MARK: Navigation actions
-            case .didSelectReason:
+            case .onTransferTap, .onRequestTap:
                 return .none
             }
         }

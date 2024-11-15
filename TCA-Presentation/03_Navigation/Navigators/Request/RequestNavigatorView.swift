@@ -1,32 +1,32 @@
 //
-//  TransferContentView.swift
+//  RequestNavigatorView.swift
 //  TCA-Demo
 //
-//  Created by Telem Tobi on 06/02/2024.
+//  Created by Telem Tobi on 08/02/2024.
 //
 
 import SwiftUI
 import ComposableArchitecture
 
-extension TransferNavigator {
+extension RequestNavigator {
     
     struct ContentView: View {
         
-        @Bindable var store: StoreOf<TransferNavigator>
+        @Bindable var store: StoreOf<RequestNavigator>
         
         var body: some View {
             NavigationStack(
                 path: $store.scope(state: \.path, action: \.path),
                 root: {
-                    ContactsView(store: store.scope(state: \.root, action: \.root))
+                    AmountView(store: store.scope(state: \.root, action: \.root))
                         .toolbar(content: toolbarContent)
                 },
                 destination: { store in
                     Group {
                         switch store.state {
-                        case .amount:
-                            if let store = store.scope(state: \.amount, action: \.amount) {
-                                AmountView(store: store)
+                        case .contacts:
+                            if let store = store.scope(state: \.contacts, action: \.contacts) {
+                                ContactsView(store: store)
                             }
                             
                         case .reason:
@@ -38,7 +38,7 @@ extension TransferNavigator {
                     .toolbar(content: toolbarContent)
                 }
             )
-            .environment(\.themeColor, .pink)
+            .environment(\.themeColor, .teal)
         }
         
         @ToolbarContentBuilder
@@ -52,7 +52,7 @@ extension TransferNavigator {
             
             ToolbarItem(placement: .principal) {
                 VStack {
-                    Text("Transfer")
+                    Text("Request")
                         .fontWeight(.bold)
                     
                     Text(store.subtitle)

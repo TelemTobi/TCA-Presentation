@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 struct HomeView: View {
     
-    let store: StoreOf<HomeReducer>
+    let store: StoreOf<Home>
     
     var body: some View {
         VStack {
@@ -40,8 +40,8 @@ struct HomeView: View {
     NavigationStack {
         HomeView(
             store: .init(
-                initialState: HomeReducer.State(),
-                reducer: HomeReducer.init
+                initialState: Home.State(),
+                reducer: Home.init
             )
         )
     }

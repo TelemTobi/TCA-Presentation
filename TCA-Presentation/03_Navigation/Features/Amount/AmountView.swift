@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 struct AmountView: View {
     
-    let store: StoreOf<AmountReducer>
+    let store: StoreOf<Amount>
     
     @Environment(\.themeColor) private var themeColor
     
@@ -39,8 +39,8 @@ struct AmountView: View {
     NavigationStack {
         AmountView(
             store: .init(
-                initialState: AmountReducer.State(),
-                reducer: { AmountReducer() }
+                initialState: Amount.State(),
+                reducer: { Amount() }
             )
         )
     }
