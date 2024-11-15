@@ -11,7 +11,9 @@ struct PreObservationView: View {
     
     @StateObject var viewModel = PreObservationViewModel()
     
-    var body: some View {        
+    var body: some View {
+        let _ = Self._printChanges()
+        
         VStack {
             if viewModel.isVisible {
                 Text(viewModel.counter.description)

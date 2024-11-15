@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PostObservationView: View {
     
-    @StateObject var viewModel = PostObservationViewModel()
+    let viewModel = PostObservationViewModel()
     
     var body: some View {
         let _ = Self._printChanges()
@@ -54,10 +54,11 @@ struct PostObservationView: View {
     }
 }
 
+@Observable
 class PostObservationViewModel: ObservableObject {
     
-    @Published private(set) var counter: Int = .zero
-    @Published private(set) var isVisible: Bool = true
+    private(set) var counter: Int = .zero
+    private(set) var isVisible: Bool = true
     
     func onIncrementTap() {
         counter += 1
